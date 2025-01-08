@@ -13,13 +13,13 @@ export class CredentialService {
 
   async create(createCredentialDto: CreateCredentialDto): Promise<Credential> {
     const newCredential = this.credentialRepository.create({
-      id: `http://universidad.ejemplo/credenciales/${Math.random().toString(36).substring(2, 8)}`,
+      id: createCredentialDto.id || `http://universidad.ejemplo/credenciales/${Math.random().toString(36).substring(2, 8)}`,
       ...createCredentialDto,
       validFrom: new Date(createCredentialDto.validFrom),
       validUntil: createCredentialDto.validUntil ? new Date(createCredentialDto.validUntil) : null,
     });
 
-    return this.credentialRepository.save(newCredential);
+    return this.credentialRepository.save(newCredential); // Guarda en la base de datos
   }
 
   async findById(id: string): Promise<Credential> {
