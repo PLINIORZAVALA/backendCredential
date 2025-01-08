@@ -1,0 +1,133 @@
+1. Crear una Credencial
+Método: POST
+URL: http://localhost:<puerto>/credentials
+Body (JSON):
+
+json
+Copiar código
+{
+  "contexto": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://www.w3.org/ns/credentials/examples/v2"
+  ],
+  "tipo": ["CredencialVerificable", "CredencialExampleAlumni"],
+  "emisor": "did:ejemplo:2g55q912ec3476eba2l9812ecbfe",
+  "validFrom": "2025-01-01T00:00:00Z",
+  "validUntil": "2026-01-01T00:00:00Z",
+  "asuntoCredencial": {
+    "id": "did:ejemplo:ebfeb1f712ebc6f1c276e12ec21",
+    "exalumnoDe": {
+      "id": "did:ejemplo:c276e12ec21ebfeb1f712ebc6f1",
+      "nombre": "Universidad Ejemplo"
+    }
+  }
+}
+Respuesta Esperada (201 Created):
+
+json
+Copiar código
+{
+  "id": "http://universidad.ejemplo/credenciales/<unique-id>",
+  "contexto": [...],
+  "tipo": [...],
+  "emisor": "did:ejemplo:2g55q912ec3476eba2l9812ecbfe",
+  "validFrom": "2025-01-01T00:00:00.000Z",
+  "validUntil": "2026-01-01T00:00:00.000Z",
+  "asuntoCredencial": {
+    "id": "did:ejemplo:ebfeb1f712ebc6f1c276e12ec21",
+    "exalumnoDe": {
+      "id": "did:ejemplo:c276e12ec21ebfeb1f712ebc6f1",
+      "nombre": "Universidad Ejemplo"
+    }
+  }
+}
+2. Obtener una Credencial por ID
+Método: GET
+URL: http://localhost:<puerto>/credentials/:id
+Parámetro de Ruta: id - El identificador único de la credencial.
+
+Ejemplo:
+
+plaintext
+Copiar código
+http://localhost:3000/credentials/http://universidad.ejemplo/credenciales/58473
+Respuesta Esperada (200 OK):
+
+json
+Copiar código
+{
+  "id": "http://universidad.ejemplo/credenciales/58473",
+  "contexto": [...],
+  "tipo": [...],
+  "emisor": "did:ejemplo:2g55q912ec3476eba2l9812ecbfe",
+  "validFrom": "2025-01-01T00:00:00.000Z",
+  "validUntil": "2026-01-01T00:00:00.000Z",
+  "asuntoCredencial": {
+    "id": "did:ejemplo:ebfeb1f712ebc6f1c276e12ec21",
+    "exalumnoDe": {
+      "id": "did:ejemplo:c276e12ec21ebfeb1f712ebc6f1",
+      "nombre": "Universidad Ejemplo"
+    }
+  }
+}
+Errores (404 Not Found):
+
+json
+Copiar código
+{
+  "statusCode": 404,
+  "message": "Credencial no encontrada",
+  "error": "Not Found"
+}
+3. Verificar Credencial
+Método: POST
+URL: http://localhost:<puerto>/credentials/verify
+Body (JSON):
+
+json
+Copiar código
+{
+  "id": "http://universidad.ejemplo/credenciales/58473"
+}
+Respuesta Esperada (200 OK):
+
+json
+Copiar código
+{
+  "id": "http://universidad.ejemplo/credenciales/58473",
+  "isValid": true
+}
+Errores (404 Not Found):
+
+json
+Copiar código
+{
+  "statusCode": 404,
+  "message": "Credencial no encontrada",
+  "error": "Not Found"
+}
+4. Listar Todas las Credenciales
+Método: GET
+URL: http://localhost:<puerto>/credentials
+
+Respuesta Esperada (200 OK):
+
+json
+Copiar código
+[
+  {
+    "id": "http://universidad.ejemplo/credenciales/58473",
+    "contexto": [...],
+    "tipo": [...],
+    "emisor": "did:ejemplo:2g55q912ec3476eba2l9812ecbfe",
+    "validFrom": "2025-01-01T00:00:00.000Z",
+    "validUntil": "2026-01-01T00:00:00.000Z",
+    "asuntoCredencial": {
+      "id": "did:ejemplo:ebfeb1f712ebc6f1c276e12ec21",
+      "exalumnoDe": {
+        "id": "did:ejemplo:c276e12ec21ebfeb1f712ebc6f1",
+        "nombre": "Universidad Ejemplo"
+      }
+    }
+  }
+]
